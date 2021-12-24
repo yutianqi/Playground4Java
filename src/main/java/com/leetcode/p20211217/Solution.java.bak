@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2021-2021. All rights reserved.
+ */
+
+package main.java.com.geektime.desiginpattern.m8_l48_proxy;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * xxx
+ *
+ * @author y00290641
+ * @since 2021/12/17
+ */
+public class Solution {
+
+    private final List<List<Integer>> list = new ArrayList<>();
+
+    private final static int ON = 1;
+
+    private final static int OFF = 0;
+
+    private int maxLevel = 0;
+
+    /**
+     * 连通性检测
+     *
+     * @param num 节点数
+     * @param operations  操作数组
+     * @return 操作结果数组
+     */
+    public int[] checkConnectivity(int num, int[][] operations) {
+        this.maxLevel = num;
+        init(num);
+
+        int[] ret = new int[operations.length];
+        for (int i = 0; i < operations.length; i++) {
+            int[] operation = operations[i];
+            updateStatus(operation);
+            if (i >= 1 && ret[i - 1] == ON && this.list.get(operation[1]).get(operation[0]) == OFF) {
+                ret[i] = ON;
+            }
+
+
+
+
+            if (check(0, 0, new HashSet<>()) == ON) {
+                ret[i] = ON;
+            } else if (check(0, 1, new HashSet<>()) == ON) {
+                ret[i] = ON;
+            } else {
+                ret[i] = OFF;
+            }
+        }
+        return ret;
+    }
+
+    private void init(int num) {
+        for (int i = 0; i < num; i++) {
+            List<Integer> defaultStatus = Arrays.asList(ON, ON);
+            this.list.add(defaultStatus);
+        }
+    }
+
+    private void updateStatus(int[] item) {
+        List<Integer> site = this.list.get(item[1]);
+        int previousStatus = site.get(item[0]);
+        if (previousStatus == ON) {
+            site.set(item[0], OFF);
+        } else {
+            site.set(item[0], ON);
+        }
+    }
+
+    private int check(int level, int id, Set<String> visited) {
+        visited.add(getKey(level, id));
+        List<Integer> levelStatus = this.list.get(level);
+        Integer status = levelStatus.get(id);
+        // 如果这条线连接到了一个死节点，那就肯定不行了
+        if (status == OFF) {
+            return OFF;
+        }
+
+        // 如果这个节点是活节点，并且是最后一层，则直接认为是成功了
+        // 最后一个节点
+        if (level == this.maxLevel - 1) {
+            return ON;
+        }
+
+        // 如果是活节点，且不是最后一层
+
+        // 如果有下一层，则判断下一层的相同节点
+        if (level < (this.maxLevel - 1) && check(level + 1, id, visited) == ON) {
+            return ON;
+        }
+
+        // 或者是同一层，并且没访问过的节点
+        Set<String> set2 = new HashSet<>(visited);
+        if (!set2.contains(getKey(level, mySwitch(id))) && check(level, mySwitch(id), set2) == ON) {
+            return ON;
+        }
+        return OFF;
+    }
+
+    private int mySwitch(int num) {
+        if (num == 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private String getKey(int level, int id) {
+        return level + "_" + id;
+    }
+}
