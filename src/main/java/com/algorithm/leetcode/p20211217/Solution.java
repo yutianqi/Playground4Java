@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2021-2021. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
  */
 
-package main.java.com.leetcode.p20211217;
+package main.java.com.algorithm.leetcode.p20211217;
 
 /**
  * Solution

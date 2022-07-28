@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2021-2021. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
  */
 
-package main.java.com.geektime.desiginpattern.m8_l48_proxy;
+package main.java.com.desiginpattern.geektime.m8_l48_proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
